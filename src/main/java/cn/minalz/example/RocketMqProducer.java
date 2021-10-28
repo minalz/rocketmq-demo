@@ -4,7 +4,6 @@ import org.apache.rocketmq.client.exception.MQBrokerException;
 import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.apache.rocketmq.client.producer.MessageQueueSelector;
-import org.apache.rocketmq.client.producer.SendResult;
 import org.apache.rocketmq.common.message.Message;
 import org.apache.rocketmq.common.message.MessageQueue;
 import org.apache.rocketmq.remoting.exception.RemotingException;
@@ -31,12 +30,36 @@ public class RocketMqProducer {
             Message message=new Message("minalz_test_topic","TagA",("Hello , RocketMQ:"+num).getBytes());
 
             //消息路由策略
-            SendResult send = producer.send(message, new MessageQueueSelector() {
+            // 同步发送
+            /*SendResult send = producer.send(message, new MessageQueueSelector() {
                 @Override
                 public MessageQueue select(List<MessageQueue> list, Message message, Object o) {
                     return list.get(0);
                 }
-            }, "key-" + num);
+            }, "key-" + num);*/
+            // 异步发送
+            /*producer.send(message, new SendCallback() {
+                @Override
+                public void onSuccess(SendResult sendResult) {
+                    System.out.printf("%s%n", sendResult);
+                }
+
+                @Override
+                public void onException(Throwable throwable) {
+                    throwable.printStackTrace();
+                }
+            });*/
+            // 自定义策略发送消息
+            producer.send(message, new MessageQueueSelector() {
+                @Override
+                public MessageQueue select(List<MessageQueue> list, Message message, Object o) {
+                    // key 有可能是负数 所以取绝对值
+                    int key = Math.abs(o.hashCode());
+                    int size = list.size();
+                    int index = key%size;
+                    return list.get(index);
+                }
+            }, "key_" + num);
         }
     }
 }

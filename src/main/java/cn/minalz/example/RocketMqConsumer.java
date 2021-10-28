@@ -38,6 +38,7 @@ public class RocketMqConsumer {
             public ConsumeOrderlyStatus consumeMessage(List<MessageExt> list, ConsumeOrderlyContext consumeOrderlyContext) {
 
                 MessageExt  messageExt=list.get(0);
+                System.out.println("Receive Message: "+messageExt);
                 //TODO  --
                 // Throw Exceptio
                 // 重新发送该消息
