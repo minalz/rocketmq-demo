@@ -1,4 +1,4 @@
-package com.gupaoedu.example;
+package cn.minalz.example;
 
 import static org.junit.Assert.assertTrue;
 

@@ -1,4 +1,4 @@
-package com.gupaoedu.example;
+package cn.minalz.example;
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;

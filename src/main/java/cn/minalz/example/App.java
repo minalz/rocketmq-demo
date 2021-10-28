@@ -1,4 +1,4 @@
-package com.gupaoedu.example;
+package cn.minalz.example;
 
 public class App
 {
